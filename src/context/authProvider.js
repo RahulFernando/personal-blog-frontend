@@ -4,25 +4,25 @@ import AuthContext from "./authContext";
 
 const AuthProvider = (props) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
-  const [userName, setUserName] = useState(localStorage.getItem("userName"));
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
-  const loginHandler = (token, userName) => {
+  const loginHandler = (token, user) => {
     setToken(token);
-    setUserName(userName);
+    setUser(user);
     localStorage.setItem("token", token);
-    localStorage.setItem("userName", userName);
+    localStorage.setItem("user", JSON.stringify(user));
   };
 
   const logoutHandler = () => {
     setToken();
-    setUserName();
+    setUser();
     localStorage.removeItem("token");
-    localStorage.removeItem("userName");
+    localStorage.removeItem("user");
   };
 
   const context = {
     token,
-    userName,
+    user,
     onLogin: loginHandler,
     onLogout: logoutHandler,
   };

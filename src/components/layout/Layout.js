@@ -1,8 +1,9 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useContext } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Box, CssBaseline } from "@mui/material";
 
 // context
+import AuthContext from "../../context/authContext";
 import AuthProvider from "../../context/authProvider";
 
 // components
@@ -18,6 +19,8 @@ const pages = ["Home", "About"];
 
 const Layout = () => {
   const location = useLocation();
+  const { token } = useContext(AuthContext);
+
   return (
     <AuthProvider>
       <Box sx={{ display: "flex" }}>
@@ -29,13 +32,27 @@ const Layout = () => {
         {location.pathname === "/" && <Category />}
         <Suspense fallback={<Loading />}>
           <Routes>
-            {publicRoutes.map((route) => (
-              <Route
-                key={route.key}
-                path={route.path}
-                element={route.element}
-              />
-            ))}
+            {publicRoutes.map(
+              (route) =>
+                route.isPrivate &&
+                token && (
+                  <Route
+                    key={route.key}
+                    path={route.path}
+                    element={route.element}
+                  />
+                )
+            )}
+            {publicRoutes.map(
+              (route) =>
+                !route.isPrivate && (
+                  <Route
+                    key={route.key}
+                    path={route.path}
+                    element={route.element}
+                  />
+                )
+            )}
           </Routes>
         </Suspense>
       </Box>
