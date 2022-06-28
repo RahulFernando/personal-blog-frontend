@@ -7,7 +7,7 @@ import Card from "../../components/card/Card";
 const DUMMY_POST = [
   {
     id: 1,
-    title: "What is NodeJS",
+    title: "Is NodeJs is a framework",
     content:
       "Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging across all continents except Antarctica",
     image:
