@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
 import { Grid, Paper } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+
+// redcuer functions
+import { fetchCategories } from '../../reducers/categorySlice';
 
 const useStyles = makeStyles({
   link: {
@@ -13,24 +17,24 @@ const useStyles = makeStyles({
 
 const Category = () => {
   const styles = useStyles();
+  const dispatch = useDispatch();
+
+  const categories = useSelector((state) => state.category.fetchCategoryData.data);
+
+  useEffect(() => {
+    dispatch(fetchCategories())
+  }, [dispatch]);
+
   return (
     <Paper>
       <Grid container p={2}>
-        <Grid item xs={3}>
-          <Link to="/about" className={styles.link}>
-            ReactJs
-          </Link>
-        </Grid>
-        <Grid item xs={3}>
-          <Link to="#" className={styles.link}>
-            ReactJs
-          </Link>
-        </Grid>
-        <Grid item xs={3}>
-          <Link to="#" className={styles.link}>
-            ReactJs
-          </Link>
-        </Grid>
+        {categories.map((category) => (
+          <Grid key={category._id} item xs={3}>
+            <Link to="/about" className={styles.link}>
+              {category.name}
+            </Link>
+          </Grid>
+        ))}
       </Grid>
     </Paper>
   );
