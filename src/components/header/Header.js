@@ -90,9 +90,43 @@ const Header = ({ pages }) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = useCallback(() => {
     setAnchorElUser(null);
+    loginFormik.resetForm();
+    registerFormik.resetForm();
+  }, [loginFormik, registerFormik]);
+
+  const linkClickHandler = (type) => {
+    if (type === "LOGIN") setIsLogin(true);
+    if (type === "REGISTER") setIsLogin(false);
   };
+
+  useEffect(() => {
+    if (registrationSuccess) {
+      registerFormik.resetForm();
+      dispatch(setAlert({ message: registrationSuccess }));
+
+      // redirect to login and reset alert message
+      setTimeout(() => {
+        dispatch(registerReset());
+        dispatch(resetAlert());
+        setIsLogin(true);
+      }, 3000);
+    }
+  }, [dispatch, registerFormik, registrationSuccess]);
+
+  useEffect(() => {
+    if (loginSuccess) {
+      dispatch(setAlert({ message: loginSuccess }));
+
+      // reset alert message and close modal
+      setTimeout(() => {
+        dispatch(loginReset());
+        dispatch(resetAlert());
+        handleCloseUserMenu();
+      }, 3000);
+    }
+  }, [dispatch, handleCloseUserMenu, loginSuccess]);
 
   return (
     <>
@@ -200,10 +234,19 @@ const Header = ({ pages }) => {
       </AppBar>
       <Modal
         open={Boolean(anchorElUser)}
-        title="Login"
+        title={isLogin ? "Login" : "Register"}
+        button={isLogin ? "Login" : "Register"}
         onClose={handleCloseUserMenu}
+        onSubmit={
+          isLogin ? loginFormik.handleSubmit : registerFormik.handleSubmit
+        }
       >
-        <Login />
+        {isLogin && (
+          <Login formik={loginFormik} onLinkClick={linkClickHandler} />
+        )}
+        {!isLogin && (
+          <Register formik={registerFormik} onLinkClick={linkClickHandler} />
+        )}
       </Modal>
     </>
   );
