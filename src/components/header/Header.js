@@ -1,5 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import {
   AppBar,
   Toolbar,
@@ -20,12 +23,60 @@ import AuthContext from "../../context/authContext";
 // components
 import Modal from "../modal/Modal";
 import Login from "../auth/Login";
+import Register from "../auth/Register";
+
+// actions
+import { login, register, registerReset, loginReset } from "../../reducers/authSlice";
+import { setAlert, resetAlert } from "../../reducers/uiSlice";
 
 const Header = ({ pages }) => {
   const { token, user } = useContext(AuthContext);
+  const dispatch = useDispatch();
 
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [isLogin, setIsLogin] = useState(true);
+
+  const registrationSuccess = useSelector(
+    (state) => state.authentication.registerData.data
+  );
+  const loginSuccess = useSelector(
+    (state) => state.authentication.loginData.data
+  );
+
+  const loginFormik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object().shape({
+      email: Yup.string()
+        .email("Please enter valid email")
+        .required("Email is required"),
+      password: Yup.string().trim().required("Password is required"),
+    }),
+    onSubmit: (values) => {
+      dispatch(login(values));
+    },
+  });
+
+  const registerFormik = useFormik({
+    initialValues: {
+      user_name: "",
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object().shape({
+      user_name: Yup.string().required("User name is required"),
+      email: Yup.string()
+        .email("Please enter valid email")
+        .required("Email is required"),
+      password: Yup.string().trim().required("Password is required"),
+    }),
+    onSubmit: (values) => {
+      dispatch(register(values));
+    },
+  });
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
