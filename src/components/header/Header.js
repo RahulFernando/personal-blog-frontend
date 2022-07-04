@@ -30,7 +30,7 @@ import { login, register, registerReset, loginReset } from "../../reducers/authS
 import { setAlert, resetAlert } from "../../reducers/uiSlice";
 
 const Header = ({ pages }) => {
-  const { token, user } = useContext(AuthContext);
+  const { token, onLogin, onLogout } = useContext(AuthContext);
   const dispatch = useDispatch();
 
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -117,7 +117,8 @@ const Header = ({ pages }) => {
 
   useEffect(() => {
     if (loginSuccess) {
-      dispatch(setAlert({ message: loginSuccess }));
+      dispatch(setAlert({ message: "Login success!" }));
+      onLogin(loginSuccess.token, loginSuccess.user)
 
       // reset alert message and close modal
       setTimeout(() => {
@@ -126,7 +127,7 @@ const Header = ({ pages }) => {
         handleCloseUserMenu();
       }, 3000);
     }
-  }, [dispatch, handleCloseUserMenu, loginSuccess]);
+  }, [dispatch, handleCloseUserMenu, loginSuccess, onLogin]);
 
   return (
     <>
@@ -216,8 +217,8 @@ const Header = ({ pages }) => {
             </Box>
             <Box sx={{ flexGrow: 0 }}>
               {token && (
-                <Button sx={{ my: 2, color: "white", display: "block" }}>
-                  Hi {user?.name}
+                <Button sx={{ my: 2, color: "white", display: "block" }} onClick={onLogout}>
+                  Logout
                 </Button>
               )}
               {!token && (
