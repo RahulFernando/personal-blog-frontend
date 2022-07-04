@@ -31,7 +31,7 @@ function* userLogin({ payload }) {
     if (response.status === 200) {
       yield put({
         type: authActions.loginSucess.type,
-        payload: response.data.message,
+        payload: response.data.body,
       });
     }
   } catch (error) {
