@@ -14,7 +14,7 @@ const Modal = ({ open, title, button, children, onSubmit, onClose }) => {
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>{title}</DialogTitle>
       <Divider />
-      <form onSubmit={onSubmit}>
+      <form autoComplete="off" noValidate onSubmit={onSubmit}>
         <DialogContent>{children}</DialogContent>
         <DialogActions>
           <Button

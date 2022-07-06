@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { Grid, TextField, Typography, Alert } from "@mui/material";
 
-const Login = ({ formik, onLinkClick }) => {
+const Register = ({ formik, onLinkClick }) => {
   const { success, message } = useSelector((state) => state.ui.alertData);
 
   return (
@@ -13,6 +13,22 @@ const Login = ({ formik, onLinkClick }) => {
           <Alert severity={success ? "success" : "error"}>{message}</Alert>
         </Grid>
       )}
+      <Grid item xs={12}>
+        <TextField
+          required
+          label="User Name"
+          name="user_name"
+          value={formik.values.user_name}
+          onChange={formik.handleChange}
+          error={formik.errors.user_name && formik.touched.user_name}
+          helperText={
+            formik.errors.user_name &&
+            formik.touched.user_name &&
+            formik.errors.user_name
+          }
+          fullWidth
+        />
+      </Grid>
       <Grid item xs={12}>
         <TextField
           required
@@ -47,18 +63,18 @@ const Login = ({ formik, onLinkClick }) => {
       <Grid item xs={12}>
         <span
           style={{ float: "right", cursor: "pointer" }}
-          onClick={onLinkClick.bind(null, "REGISTER")}
+          onClick={onLinkClick.bind(null, "LOGIN")}
         >
-          <Typography variant="body1">Don't have an account?</Typography>
+          <Typography variant="body1">Alredy have an account?</Typography>
         </span>
       </Grid>
     </Grid>
   );
 };
 
-Login.propTypes = {
+Register.propTypes = {
   formik: PropTypes.object.isRequired,
   onLinkClick: PropTypes.func.isRequired,
 };
 
-export default Login;
+export default Register;
