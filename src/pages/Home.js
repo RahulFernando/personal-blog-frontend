@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Grid } from "@mui/material";
 
 // components
-import Card from "../../components/card/Card";
+import Card from "../components/card/Card";
 
 const Home = () => {
   const posts = useSelector(state => state.posts.fetchPostData.data);
