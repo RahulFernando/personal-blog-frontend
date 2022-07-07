@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Grid, Typography, Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 
@@ -15,6 +15,7 @@ const useStyles = makeStyles({
 const NotFound = () => {
   const styles = useStyles();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const buttonClickHandler = () => {
     navigate("/");
@@ -27,6 +28,7 @@ const NotFound = () => {
       direction="column"
       alignItems="center"
       justifyContent="center"
+      sx={{ ...(location.pathname !== '/' && { mt: 8 }) }}
     >
       <Grid item xs={12}>
         <Typography variant="h2" color="primary.dark" className={styles.title}>
