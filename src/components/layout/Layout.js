@@ -21,7 +21,7 @@ const Layout = () => {
   const location = useLocation();
   const { token, user } = useContext(AuthContext);
 
-  const appBarOptions = user.role === 'admin' ? adminPages : pages;
+  const appBarOptions = user?.role === 'admin' ? adminPages : pages;
 
   return (
     <>
