@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import AuthContext from "./authContext";
 
 const AuthProvider = (props) => {
+  const navigate = useNavigate();
+
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
@@ -18,6 +21,7 @@ const AuthProvider = (props) => {
     setUser();
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    navigate("/");
   };
 
   const context = {

@@ -24,7 +24,7 @@ export const publicRoutes = [
 export const adminRoutes = [
   {
     key: "a1",
-    path: "/admin/home",
+    path: "/admin",
     element: <AdminHomePage />,
     isPrivate: true,
     isAdmin: true,

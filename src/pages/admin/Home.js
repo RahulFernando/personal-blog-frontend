@@ -3,6 +3,7 @@ import { Grid, Box } from '@mui/material'
 
 // components
 import Accordion from '../../components/accordion/Accordion';
+import Categories from '../../components/admin/Categories';
 
 const Home = () => {
   return (
@@ -10,7 +11,7 @@ const Home = () => {
       <Grid container spacing={2} mt={2}>
         <Grid item xs={6}>
           <Accordion title='Categories'>
-            <h6>Categories</h6>
+            <Categories />
           </Accordion>
         </Grid>
         <Grid item xs={6}>
