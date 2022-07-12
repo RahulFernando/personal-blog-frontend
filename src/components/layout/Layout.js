@@ -1,5 +1,5 @@
-import React, { Suspense, useContext } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import React, { Suspense, useContext, useEffect } from "react";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { Box, CssBaseline } from "@mui/material";
 
 // context
@@ -20,8 +20,13 @@ const adminPages = ["Home"];
 const Layout = () => {
   const location = useLocation();
   const { token, user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const appBarOptions = user?.role === 'admin' ? adminPages : pages;
+  const appBarOptions = user?.role === "admin" ? adminPages : pages;
+
+  useEffect(() => {
+    if (user?.role === "admin") navigate("/admin");
+  }, [navigate, user]);
 
   return (
     <>
@@ -38,8 +43,7 @@ const Layout = () => {
               (route) =>
                 route.isPrivate &&
                 !route.isAdmin &&
-                token &&
-                user.role !== "admin" && (
+                token && (
                   <Route
                     key={route.key}
                     path={route.path}
@@ -50,7 +54,8 @@ const Layout = () => {
             {publicRoutes.map(
               (route) =>
                 !route.isPrivate &&
-                !route.isAdmin && (
+                !route.isAdmin &&
+                user?.role !== "admin" && (
                   <Route
                     key={route.key}
                     path={route.path}
