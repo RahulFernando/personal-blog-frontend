@@ -6,6 +6,11 @@ const initialState = {
     data: [],
     error: null,
   },
+  addCategoryData: {
+    loading: false,
+    data: null,
+    error: null,
+  },
 };
 
 const categorySlice = createSlice({
@@ -25,6 +30,22 @@ const categorySlice = createSlice({
       state.fetchCategoryData.data = [];
       state.fetchCategoryData.error = payload;
     },
+    addCategory: (state) => {
+      state.addCategoryData.loading = true;
+    },
+    addCategorySuccess: (state, { payload }) => {
+      state.addCategoryData.loading = false;
+      state.addCategoryData.data = payload;
+      state.addCategoryData.error = null;
+    },
+    addCategoryFailure: (state, { payload }) => {
+      state.addCategoryData.loading = false;
+      state.addCategoryData.data = null;
+      state.addCategoryData.error = payload;
+    },
+    addCategoryReset: (state) => {
+      state.addCategoryData = initialState.addCategoryData;
+    },
   },
 });
 
@@ -34,6 +55,10 @@ export const {
   fetchCategories,
   fetchCategoriesSucess,
   fetchCategoriesFailure,
+  addCategory,
+  addCategorySuccess,
+  addCategoryFailure,
+  addCategoryReset,
 } = actions;
 
 export default reducer;

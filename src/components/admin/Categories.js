@@ -10,7 +10,7 @@ import Modal from "../modal/Modal";
 import CategoryForm from "./CategoryForm";
 
 // actions
-import { fetchCategories } from "../../reducers/categorySlice";
+import { fetchCategories, addCategory, addCategoryReset } from "../../reducers/categorySlice";
 
 const columns = [
   {
@@ -49,6 +49,9 @@ const Categories = () => {
   const loading = useSelector(
     (state) => state.category.fetchCategoryData.loading
   );
+  const success = useSelector(
+    (state) => state.category.addCategoryData.data
+  );
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -59,7 +62,7 @@ const Categories = () => {
     validationSchema: Yup.object().shape({
       name: Yup.string().required("Category cannot be empty"),
     }),
-    onSubmit: (values) => {},
+    onSubmit: (values) => dispatch(addCategory(values)),
   });
 
   const openModalHandler = () => {
@@ -73,6 +76,15 @@ const Categories = () => {
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (success) {
+      dispatch(addCategoryReset());
+      setIsOpen(false);
+      formik.resetForm();
+      dispatch(fetchCategories());
+    }
+  }, [dispatch, formik, success]);
 
   return (
     <>
@@ -93,7 +105,7 @@ const Categories = () => {
             rows={categories}
             getRowId={(row) => row._id}
             loading={loading}
-            sx={{ minHeight: "160px" }}
+            sx={{ minHeight: "200px" }}
             hideFooter
           />
         </Grid>
