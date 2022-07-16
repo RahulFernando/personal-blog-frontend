@@ -1,0 +1,28 @@
+/* Override default */
+.Draftail-Toolbar {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Override default */
+.Draftail-Editor {
+  border: none !important;
+  width: 60% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Override default */
+.public-DraftEditor-content {
+  font-family: Georgia, "Times New Roman", Times, serif !important;
+}
+
+/* Override default */
+.public-DraftEditorPlaceholder-inner {
+  font-family: Georgia, "Times New Roman", Times, serif !important;
+}
+
+img {
+  height: 250px;
+  width: 300px;
+}

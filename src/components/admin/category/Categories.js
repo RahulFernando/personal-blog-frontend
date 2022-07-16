@@ -6,11 +6,11 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 // components
-import Modal from "../modal/Modal";
+import Modal from "../..//modal/Modal";
 import CategoryForm from "./CategoryForm";
 
 // actions
-import { fetchCategories, addCategory, addCategoryReset } from "../../reducers/categorySlice";
+import { fetchCategories, addCategory, addCategoryReset } from "../../../reducers/categorySlice";
 
 const columns = [
   {
