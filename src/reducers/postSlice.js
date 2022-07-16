@@ -6,6 +6,11 @@ const initialState = {
     data: [],
     error: null,
   },
+  addPostData: {
+    loading: false,
+    data: null,
+    error: null,
+  },
 };
 
 const postSlice = createSlice({
@@ -25,11 +30,31 @@ const postSlice = createSlice({
       state.fetchPostData.data = [];
       state.fetchPostData.error = payload;
     },
+    addPost: (state) => {
+      state.addPostData.loading = true;
+    },
+    addPostSuccess: (state, { payload }) => {
+      state.addPostData.loading = false;
+      state.addPostData.data = payload;
+      state.addPostData.error = null;
+    },
+    addPostFailuer: (state, { payload }) => {
+      state.addPostData.loading = false;
+      state.addPostData.data = null;
+      state.addPostData.error = payload;
+    },
   },
 });
 
 const { actions, reducer } = postSlice;
 
-export const { fetchPosts, fetchPostsSucess, fetchPostsFailure } = actions;
+export const {
+  fetchPosts,
+  fetchPostsSucess,
+  fetchPostsFailure,
+  addPost,
+  addPostSuccess,
+  addPostFailuer,
+} = actions;
 
 export default reducer;

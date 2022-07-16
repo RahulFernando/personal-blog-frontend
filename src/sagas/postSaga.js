@@ -24,6 +24,25 @@ function* getAllPosts({ payload }) {
   }
 }
 
+function* addPost({ payload }) {
+  try {
+    const response = yield call(postService.addPost, payload);
+
+    if (response.status === 201) {
+      yield put({
+        type: postActions.addPostSuccess.type,
+        payload: response.data.message,
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: postActions.addPostFailuer.type,
+      payload: error,
+    });
+  }
+}
+
 export default function* watchers() {
   yield takeEvery(postActions.fetchPosts.type, getAllPosts);
+  yield takeEvery(postActions.addPost.type, addPost);
 }
