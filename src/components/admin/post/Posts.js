@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Button, Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography, Avatar } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+
+// actions
+import { fetchPosts } from "../../../reducers/postSlice";
 
 const columns = [
   {
@@ -9,11 +13,7 @@ const columns = [
     headerName: "Image",
     flex: 1,
     renderCell: (params) => (
-      <img
-        sx={{ width: 40, height: 40 }}
-        src={params.row.image}
-        alt={params.row.title}
-      />
+      <Avatar src={params.row.image} alt={params.row.title} variant="square" />
     ),
   },
   {
@@ -45,8 +45,24 @@ const columns = [
 
 const Posts = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const fetchedPosts = useSelector((state) => state.posts.fetchPostData.data);
 
   const openModalHandler = () => navigate("/admin/new-post");
+
+  useEffect(() => {
+    dispatch(fetchPosts());
+  }, [dispatch]);
+
+  const posts =
+    fetchedPosts.length > 0 &&
+    fetchedPosts.map((post) => {
+      return {
+        ...post,
+        image: `${process.env.REACT_APP_API}/v1/api/images/${post.image}`,
+      };
+    });
 
   return (
     <Grid container spacing={2}>
@@ -63,7 +79,7 @@ const Posts = () => {
       <Grid item xs={12}>
         <DataGrid
           columns={columns}
-          rows={[]}
+          rows={posts}
           sx={{ minHeight: 200 }}
           getRowId={(row) => row._id}
           hideFooter
