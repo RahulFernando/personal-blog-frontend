@@ -2,72 +2,35 @@ import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import {
-  Box,
-  Button,
-  FormControl,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  OutlinedInput,
-} from "@mui/material";
-import { useTheme } from "@mui/styles";
-import { DraftailEditor } from "draftail";
+import { Box } from "@mui/material";
 import { EditorState } from "draft-js";
-import createInlineToolbarPlugin from "draft-js-inline-toolbar-plugin";
-import createSideToolbarPlugin from "draft-js-side-toolbar-plugin";
 import { convertToHTML } from "draft-convert";
 
+// components
+import NewPostForm from "../../components/admin/post/NewPostForm";
+
 // actions
-import { addPost } from "../../reducers/postSlice";
+import { addPost, addPostReset } from "../../reducers/postSlice";
 import { fetchCategories } from "../../reducers/categorySlice";
 
 // styles
 import "./NewPost.css";
 
-const inlineToolbarPlugin = createInlineToolbarPlugin();
-const { InlineToolbar } = inlineToolbarPlugin;
-
-const sideToolbarPlugin = createSideToolbarPlugin();
-const { SideToolbar } = sideToolbarPlugin;
-
-const plugins = [inlineToolbarPlugin, sideToolbarPlugin];
-
 const sampleImage =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4jzPq0x6yrw41vG5FbeD82rSGuMs6ShcSoQ&usqp=CAU";
-
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
 
 const NewPost = () => {
   const dispatch = useDispatch();
   const imageRef = useRef();
-  const theme = useTheme();
 
   const [editor, setEditor] = useState(EditorState.createEmpty());
   const [image, setImage] = useState(null);
 
   const fetchedCategories = useSelector(
     (state) => state.category.fetchCategoryData.data
+  );
+  const postAddSuccess = useSelector(
+    (state) => state.posts.addPostData.data
   );
 
   const formik = useFormik({
@@ -100,97 +63,28 @@ const NewPost = () => {
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
+  
+  useEffect(() => {
+    if (postAddSuccess) {
+      formik.resetForm();
+      dispatch(addPostReset());
+    }
+  }, [dispatch, formik, postAddSuccess]);
 
   const preview = image ? URL.createObjectURL(image) : sampleImage;
 
   return (
     <Box sx={{ marginTop: 8, height: "100vh" }}>
-      <form onSubmit={formik.handleSubmit}>
-        <Grid container spacing={2} mt={2}>
-          <Grid item container spacing={2} style={{ textAlign: "center" }}>
-            <Grid item xs={12}>
-              <img src={preview} alt="img" />
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                type="button"
-                variant="outlined"
-                sx={{ textTransform: "none" }}
-                onClick={onSelectImgHandler}
-              >
-                Select Image
-              </Button>
-              <input
-                type="file"
-                hidden
-                ref={imageRef}
-                onChange={onImageChangeHandler}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Title"
-                name="title"
-                value={formik.values.title}
-                error={formik.errors.title && formik.touched.title}
-                helperText={
-                  formik.errors.title &&
-                  formik.touched.title &&
-                  formik.errors.title
-                }
-                sx={{ width: "60%" }}
-                onChange={formik.handleChange}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControl sx={{ width: "60%" }}>
-                <InputLabel>Categories</InputLabel>
-                <Select
-                  multiple
-                  name="categories"
-                  value={formik.values.categories}
-                  input={<OutlinedInput label="Category" />}
-                  MenuProps={MenuProps}
-                  onChange={formik.handleChange}
-                >
-                  {fetchedCategories.map((category) => (
-                    <MenuItem
-                      key={category._id}
-                      value={category._id}
-                      style={getStyles(
-                        category._id,
-                        formik.values.categories,
-                        theme
-                      )}
-                    >
-                      {category.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
-          <Grid item xs={12}>
-            <DraftailEditor
-              editorState={editor}
-              onChange={onChangeHandler}
-              placeholder="Tell your story..."
-              plugins={plugins}
-            />
-            <InlineToolbar />
-            <SideToolbar />
-          </Grid>
-          <Grid item xs={12} style={{ textAlign: "center" }}>
-            <Button
-              type="submit"
-              variant="contained"
-              sx={{ textTransform: "none" }}
-            >
-              Publish
-            </Button>
-          </Grid>
-        </Grid>
-      </form>
+      <NewPostForm
+        formik={formik}
+        preview={preview}
+        fetchedCategories={fetchedCategories}
+        editor={editor}
+        onChange={onChangeHandler}
+        onSelectImg={onSelectImgHandler}
+        onImageChange={onImageChangeHandler}
+        ref={imageRef}
+      />
     </Box>
   );
 };

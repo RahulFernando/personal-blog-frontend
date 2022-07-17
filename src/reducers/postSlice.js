@@ -43,6 +43,9 @@ const postSlice = createSlice({
       state.addPostData.data = null;
       state.addPostData.error = payload;
     },
+    addPostReset: (state) => {
+      state.addPostData = initialState.addPostData;
+    },
   },
 });
 
@@ -55,6 +58,7 @@ export const {
   addPost,
   addPostSuccess,
   addPostFailuer,
+  addPostReset,
 } = actions;
 
 export default reducer;
