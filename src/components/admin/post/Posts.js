@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Button, Grid, Typography, Avatar } from "@mui/material";
+import { Button, Grid, Typography, Avatar, IconButton } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
 // actions
-import { fetchPosts } from "../../../reducers/postSlice";
+import { fetchPosts, deletePost, deletePostReset } from "../../../reducers/postSlice";
 
-const columns = [
+const COLUMNS = [
   {
     field: "image",
     headerName: "Image",
@@ -47,13 +47,49 @@ const Posts = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const loading = useSelector((state) => state.posts.fetchPostData.loading);
   const fetchedPosts = useSelector((state) => state.posts.fetchPostData.data);
+  const deleteSuccess = useSelector((state) => state.posts.deletePostData.data);
 
   const openModalHandler = () => navigate("/admin/new-post");
+
+  const editClickHandler = (id) => navigate(`/admin/update-post/${id}`);
+
+  const deleteClickHandler = (id) => dispatch(deletePost(id));
 
   useEffect(() => {
     dispatch(fetchPosts());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (deleteSuccess) {
+      dispatch(fetchPosts());
+      dispatch(deletePostReset());
+    }
+  }, [dispatch, deleteSuccess]);
+
+  const columns = [
+    ...COLUMNS,
+    {
+      field: "action",
+      headerName: "",
+      flex: 1,
+      renderCell: (params) => (
+        <div style={{ display: "flex" }}>
+          <IconButton onClick={editClickHandler.bind(null, params.row._id)}>
+            <span class="iconify" data-icon="carbon:edit" />
+          </IconButton>
+          <IconButton onClick={deleteClickHandler.bind(null, params.row._id)}>
+            <span
+              class="iconify"
+              data-icon="fluent:delete-16-regular"
+              style={{ color: "#ed2f2f" }}
+            />
+          </IconButton>
+        </div>
+      ),
+    },
+  ];
 
   const posts =
     fetchedPosts.length > 0 &&
@@ -82,6 +118,7 @@ const Posts = () => {
           rows={posts}
           sx={{ minHeight: 200 }}
           getRowId={(row) => row._id}
+          loading={loading}
           hideFooter
         />
       </Grid>

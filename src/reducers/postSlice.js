@@ -11,6 +11,11 @@ const initialState = {
     data: null,
     error: null,
   },
+  deletePostData: {
+    loading: false,
+    data: null,
+    error: null,
+  },
 };
 
 const postSlice = createSlice({
@@ -46,6 +51,22 @@ const postSlice = createSlice({
     addPostReset: (state) => {
       state.addPostData = initialState.addPostData;
     },
+    deletePost: (state) => {
+      state.deletePostData.loading = true;
+    },
+    deletePostSuccess: (state, { payload }) => {
+      state.deletePostData.loading = false;
+      state.deletePostData.data = payload;
+      state.deletePostData.error = null;
+    },
+    deletePostFailure: (state, { payload }) => {
+      state.deletePostData.loading = false;
+      state.deletePostData.data = null;
+      state.deletePostData.error = payload;
+    },
+    deletePostReset: (state) => {
+      state.deletePostData = initialState.deletePostData;
+    },
   },
 });
 
@@ -59,6 +80,10 @@ export const {
   addPostSuccess,
   addPostFailuer,
   addPostReset,
+  deletePost,
+  deletePostSuccess,
+  deletePostFailure,
+  deletePostReset,
 } = actions;
 
 export default reducer;
