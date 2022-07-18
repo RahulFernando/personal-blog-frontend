@@ -7,7 +7,7 @@ import { EditorState } from "draft-js";
 import { convertToHTML } from "draft-convert";
 
 // components
-import NewPostForm from "../../components/admin/post/NewPostForm";
+import PostForm from "../../components/admin/post/PostForm";
 
 // actions
 import { addPost, addPostReset } from "../../reducers/postSlice";
@@ -75,7 +75,7 @@ const NewPost = () => {
 
   return (
     <Box sx={{ marginTop: 8, height: "100vh" }}>
-      <NewPostForm
+      <PostForm
         formik={formik}
         preview={preview}
         fetchedCategories={fetchedCategories}

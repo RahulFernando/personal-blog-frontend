@@ -45,4 +45,11 @@ export const adminRoutes = [
     isPrivate: true,
     isAdmin: true,
   },
+  {
+    key: "a3",
+    path: "/admin/update-post/:id",
+    element: <NewPost />,
+    isPrivate: true,
+    isAdmin: true,
+  },
 ];
