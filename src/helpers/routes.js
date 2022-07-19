@@ -5,6 +5,7 @@ const HomePage = lazy(() => import("../pages/Home"));
 const NotFoundPage = lazy(() => import("../pages/NotFound"));
 const AdminHomePage = lazy(() => import("../pages/admin/Home"));
 const NewPost = lazy(() => import("../pages/admin/NewPost"));
+const UpdatePost = lazy(() => import("../pages/admin/UpdatePost"));
 
 export const publicRoutes = [
   {
@@ -46,9 +47,9 @@ export const adminRoutes = [
     isAdmin: true,
   },
   {
-    key: "a3",
+    key: "a4",
     path: "/admin/update-post/:id",
-    element: <NewPost />,
+    element: <UpdatePost />,
     isPrivate: true,
     isAdmin: true,
   },
