@@ -6,6 +6,24 @@ import postService from "../services/postService";
 // reducers
 import * as postActions from "../reducers/postSlice";
 
+function* getPost({ payload }) {
+  try {
+    const response = yield call(postService.getPost, payload);
+
+    if (response.status === 200) {
+      yield put({
+        type: postActions.fetchPostByIdSuccess.type,
+        payload: response.data.body.post,
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: postActions.fetchPostByIdFailure.type,
+      payload: error,
+    });
+  }
+}
+
 function* getAllPosts({ payload }) {
   try {
     const response = yield call(postService.getPosts, payload);
@@ -61,6 +79,7 @@ function* deletePost({ payload }) {
 }
 
 export default function* watchers() {
+  yield takeEvery(postActions.fetchPostById.type, getPost);
   yield takeEvery(postActions.fetchPosts.type, getAllPosts);
   yield takeEvery(postActions.addPost.type, addPost);
   yield takeEvery(postActions.deletePost.type, deletePost);

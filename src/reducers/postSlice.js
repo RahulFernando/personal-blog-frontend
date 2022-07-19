@@ -6,6 +6,11 @@ const initialState = {
     data: [],
     error: null,
   },
+  fetchPostByIdData: {
+    loading: false,
+    data: null,
+    error: null,
+  },
   addPostData: {
     loading: false,
     data: null,
@@ -34,6 +39,19 @@ const postSlice = createSlice({
       state.fetchPostData.loading = false;
       state.fetchPostData.data = [];
       state.fetchPostData.error = payload;
+    },
+    fetchPostById: (state) => {
+      state.fetchPostByIdData.loading = true;
+    },
+    fetchPostByIdSuccess: (state, { payload }) => {
+      state.fetchPostByIdData.loading = false;
+      state.fetchPostByIdData.data = payload;
+      state.fetchPostByIdData.error = null;
+    },
+    fetchPostByIdFailure: (state, { payload }) => {
+      state.fetchPostByIdData.loading = false;
+      state.fetchPostByIdData.data = null;
+      state.fetchPostByIdData.error = payload;
     },
     addPost: (state) => {
       state.addPostData.loading = true;
@@ -76,6 +94,9 @@ export const {
   fetchPosts,
   fetchPostsSucess,
   fetchPostsFailure,
+  fetchPostById,
+  fetchPostByIdSuccess,
+  fetchPostByIdFailure,
   addPost,
   addPostSuccess,
   addPostFailuer,

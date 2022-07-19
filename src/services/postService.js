@@ -2,6 +2,7 @@ import http from "../helpers/httpHelper";
 
 const httpHelper = {
   getPosts: (data) => http.get(`/posts?${data}`),
+  getPost: (id) => http.get(`/posts/${id}`),
   addPost: (data) => http.post("/posts", data),
   deletePost: (id) => http.delete(`/posts/${id}`),
 };
