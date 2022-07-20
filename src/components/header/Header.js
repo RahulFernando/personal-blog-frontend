@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { useFormik } from "formik";
@@ -26,12 +27,18 @@ import Login from "../auth/Login";
 import Register from "../auth/Register";
 
 // actions
-import { login, register, registerReset, loginReset } from "../../reducers/authSlice";
+import {
+  login,
+  register,
+  registerReset,
+  loginReset,
+} from "../../reducers/authSlice";
 import { setAlert, resetAlert } from "../../reducers/uiSlice";
 
 const Header = ({ pages }) => {
   const { token, onLogin, onLogout } = useContext(AuthContext);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -86,6 +93,8 @@ const Header = ({ pages }) => {
     setAnchorElNav(null);
   };
 
+  const handleMenuItemClick = (path) => navigate(path);
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -118,7 +127,7 @@ const Header = ({ pages }) => {
   useEffect(() => {
     if (loginSuccess) {
       dispatch(setAlert({ message: "Login success!" }));
-      onLogin(loginSuccess.token, loginSuccess.user)
+      onLogin(loginSuccess.token, loginSuccess.user);
 
       // reset alert message and close modal
       setTimeout(() => {
@@ -180,8 +189,8 @@ const Header = ({ pages }) => {
                 }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
-                    <Typography textAlign="center">{page}</Typography>
+                  <MenuItem key={page} onClick={handleMenuItemClick.bind(null, page.path)}>
+                    <Typography textAlign="center">{page.title}</Typography>
                   </MenuItem>
                 ))}
               </Menu>
@@ -208,16 +217,19 @@ const Header = ({ pages }) => {
               {pages.map((page) => (
                 <Button
                   key={page}
-                  onClick={handleCloseNavMenu}
+                  onClick={handleMenuItemClick.bind(null, page.path)}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
-                  {page}
+                  {page.title}
                 </Button>
               ))}
             </Box>
             <Box sx={{ flexGrow: 0 }}>
               {token && (
-                <Button sx={{ my: 2, color: "white", display: "block" }} onClick={onLogout}>
+                <Button
+                  sx={{ my: 2, color: "white", display: "block" }}
+                  onClick={onLogout}
+                >
                   Logout
                 </Button>
               )}
@@ -254,7 +266,12 @@ const Header = ({ pages }) => {
 };
 
 Header.propTypes = {
-  pages: PropTypes.array,
+  pages: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      path: PropTypes.string.isRequired,
+    })
+  ),
 };
 
 Header.defaultProps = {

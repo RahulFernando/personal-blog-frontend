@@ -9,11 +9,18 @@
     "@mui/material": "^5.8.4",
     "@mui/styled-engine-sc": "^5.8.0",
     "@mui/styles": "^5.8.4",
+    "@mui/x-data-grid": "^5.13.0",
     "@reduxjs/toolkit": "^1.8.3",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
+    "draft-convert": "^2.1.12",
+    "draft-js": "^0.10.5",
+    "draft-js-import-html": "^1.4.1",
+    "draft-js-inline-toolbar-plugin": "^3.0.1",
+    "draft-js-side-toolbar-plugin": "^3.0.2",
+    "draftail": "^1.4.1",
     "formik": "^2.2.9",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
@@ -30,7 +37,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "postbuild": "node webconfig/copyWebConfig.js"
   },
   "eslintConfig": {
     "extends": [

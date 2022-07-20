@@ -17,7 +17,6 @@ function* getAllCategories() {
       });
     }
   } catch (error) {
-    console.log(error)
     yield put({
       type: categoryActions.fetchCategoriesFailure.type,
       payload: error,
@@ -25,6 +24,25 @@ function* getAllCategories() {
   }
 }
 
+function* addCategory({ payload }) {
+  try {
+    const response = yield call(categoryService.postCategory, payload);
+
+    if (response.status === 201) {
+      yield put({
+        type: categoryActions.addCategorySuccess.type,
+        payload: response.data.message,
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: categoryActions.addCategoryFailure.type,
+      payload: error,
+    });
+  }
+}
+
 export default function* watchers() {
   yield takeEvery(categoryActions.fetchCategories.type, getAllCategories);
+  yield takeEvery(categoryActions.addCategory.type, addCategory);
 }
