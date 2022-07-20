@@ -134,7 +134,7 @@ const Header = ({ pages }) => {
         dispatch(loginReset());
         dispatch(resetAlert());
         handleCloseUserMenu();
-      }, 3000);
+      }, 2000);
     }
   }, [dispatch, handleCloseUserMenu, loginSuccess, onLogin]);
 

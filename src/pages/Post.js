@@ -49,15 +49,7 @@ const Post = () => {
               />
             </Grid>
           )}
-          <Grid
-            item
-            xs={12}
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-          >
+          <Grid item xs={12}>
             {post && Parser(post?.content)}
           </Grid>
         </Grid>
