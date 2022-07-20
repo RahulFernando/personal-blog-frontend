@@ -14,8 +14,8 @@ import Category from "./Category";
 // routes
 import { publicRoutes, adminRoutes } from "../../helpers/routes";
 
-const pages = ["Home", "About"];
-const adminPages = ["Home"];
+const pages = [{ title: 'Home', path: '/' }, { title: 'About', path: '/about'}];
+const adminPages = [{ title: 'Home', path: '/admin' }];
 
 const Layout = () => {
   const location = useLocation();
