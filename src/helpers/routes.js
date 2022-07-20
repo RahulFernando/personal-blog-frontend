@@ -2,6 +2,7 @@ import { lazy } from "react";
 import { Navigate } from 'react-router-dom'
 
 const HomePage = lazy(() => import("../pages/Home"));
+const Post = lazy(() => import("../pages/Post"));
 const NotFoundPage = lazy(() => import("../pages/NotFound"));
 const AdminHomePage = lazy(() => import("../pages/admin/Home"));
 const NewPost = lazy(() => import("../pages/admin/NewPost"));
@@ -17,6 +18,13 @@ export const publicRoutes = [
   },
   {
     key: "p2",
+    path: "/:id",
+    element: <Post />,
+    isPrivate: false,
+    isAdmin: false,
+  },
+  {
+    key: "p3",
     path: "*",
     element: <NotFoundPage />,
     isPrivate: false,
