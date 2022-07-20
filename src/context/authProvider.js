@@ -14,6 +14,7 @@ const AuthProvider = (props) => {
     setUser(user);
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(user));
+    window.location.reload();
   };
 
   const logoutHandler = () => {
@@ -21,7 +22,8 @@ const AuthProvider = (props) => {
     setUser();
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    navigate("/");
+    navigate('/');
+    window.location.reload();
   };
 
   const context = {

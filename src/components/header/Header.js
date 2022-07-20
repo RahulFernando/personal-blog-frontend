@@ -134,7 +134,7 @@ const Header = ({ pages }) => {
         dispatch(loginReset());
         dispatch(resetAlert());
         handleCloseUserMenu();
-      }, 3000);
+      }, 2000);
     }
   }, [dispatch, handleCloseUserMenu, loginSuccess, onLogin]);
 
@@ -189,7 +189,7 @@ const Header = ({ pages }) => {
                 }}
               >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={handleMenuItemClick.bind(null, page.path)}>
+                  <MenuItem key={page.title} onClick={handleMenuItemClick.bind(null, page.path)}>
                     <Typography textAlign="center">{page.title}</Typography>
                   </MenuItem>
                 ))}
@@ -216,7 +216,7 @@ const Header = ({ pages }) => {
             <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
               {pages.map((page) => (
                 <Button
-                  key={page}
+                  key={page.title}
                   onClick={handleMenuItemClick.bind(null, page.path)}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >

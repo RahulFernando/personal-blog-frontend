@@ -13,6 +13,7 @@ const Home = () => {
       {posts.map((post) => (
         <Grid key={post._id} item xs={3}>
           <Card
+            id={post._id}
             image={post.image}
             title={post.title}
             content={post.content}
