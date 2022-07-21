@@ -78,9 +78,29 @@ function* deletePost({ payload }) {
   }
 }
 
+function* updatePost({ payload }) {
+  try {
+    const { id } = payload; 
+    const response = yield call(postService.putPost, id, payload.formData);
+
+    if (response.status === 200) {
+      yield put({
+        type: postActions.updatePostSuccess.type,
+        payload: response.data.message,
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: postActions.updatePostFailure.type,
+      payload: error,
+    });
+  }
+}
+
 export default function* watchers() {
   yield takeEvery(postActions.fetchPostById.type, getPost);
   yield takeEvery(postActions.fetchPosts.type, getAllPosts);
   yield takeEvery(postActions.addPost.type, addPost);
+  yield takeEvery(postActions.updatePost.type, updatePost);
   yield takeEvery(postActions.deletePost.type, deletePost);
 }

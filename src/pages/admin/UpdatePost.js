@@ -12,7 +12,7 @@ import { convertToHTML } from "draft-convert";
 import PostForm from "../../components/admin/post/PostForm";
 
 // aactions
-import { fetchPostById } from "../../reducers/postSlice";
+import { fetchPostById, updatePost } from "../../reducers/postSlice";
 import { fetchCategories } from "../../reducers/categorySlice";
 
 // styles
@@ -58,7 +58,7 @@ const UpdatePost = () => {
       formData.append("content", convertToHTML(editor.getCurrentContent()));
       formData.append("categories", values.categories);
 
-      //   dispatch(addPost(formData));
+      dispatch(updatePost({id, formData}));
     },
   });
 
@@ -77,7 +77,7 @@ const UpdatePost = () => {
   const preview = image ? URL.createObjectURL(image) : sampleImage;
 
   return (
-    <Box sx={{ marginTop: 8, height: "100vh" }}>
+    <Box sx={{ marginTop: 8, minHeight: "100vh" }}>
       <PostForm
         formik={formik}
         preview={preview}
