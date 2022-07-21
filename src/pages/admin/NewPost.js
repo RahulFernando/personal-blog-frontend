@@ -74,7 +74,7 @@ const NewPost = () => {
   const preview = image ? URL.createObjectURL(image) : sampleImage;
 
   return (
-    <Box sx={{ marginTop: 8, height: "100vh" }}>
+    <Box sx={{ marginTop: 8, minHeight: "100vh" }}>
       <PostForm
         formik={formik}
         preview={preview}
