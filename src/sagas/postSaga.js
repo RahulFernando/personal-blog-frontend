@@ -5,6 +5,7 @@ import postService from "../services/postService";
 
 // reducers
 import * as postActions from "../reducers/postSlice";
+import * as uiActions from "../reducers/uiSlice";
 
 function* getPost({ payload }) {
   try {
@@ -51,11 +52,19 @@ function* addPost({ payload }) {
         type: postActions.addPostSuccess.type,
         payload: response.data.message,
       });
+      yield put({
+        type: uiActions.setAlert.type,
+        payload: { message: response.data.message },
+      });
     }
   } catch (error) {
     yield put({
       type: postActions.addPostFailuer.type,
       payload: error,
+    });
+    yield put({
+      type: uiActions.setAlert.type,
+      payload: { success: false, message: error },
     });
   }
 }
@@ -88,11 +97,19 @@ function* updatePost({ payload }) {
         type: postActions.updatePostSuccess.type,
         payload: response.data.message,
       });
+      yield put({
+        type: uiActions.setAlert.type,
+        payload: { message: response.data.message },
+      });
     }
   } catch (error) {
     yield put({
       type: postActions.updatePostFailure.type,
       payload: error,
+    });
+    yield put({
+      type: uiActions.setAlert.type,
+      payload: { message: error, success: false },
     });
   }
 }

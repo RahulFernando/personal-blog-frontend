@@ -18,7 +18,7 @@ const Card = ({ id, image, title, content }) => {
   const readMeClickHandler = (id) => navigate(`/${id}`);
 
   return (
-    <MaterialCard sx={{ maxWidth: 345, minWidth: 345 }}>
+    <MaterialCard sx={{ minHeight: 300 }}>
       <CardMedia
         component="img"
         height="140"
