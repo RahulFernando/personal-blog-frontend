@@ -1,4 +1,5 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import {
   Button,
@@ -9,11 +10,16 @@ import {
   Select,
   TextField,
   OutlinedInput,
+  Alert,
 } from "@mui/material";
 import { useTheme } from "@mui/styles";
 import { DraftailEditor } from "draftail";
 import createInlineToolbarPlugin from "draft-js-inline-toolbar-plugin";
 import createSideToolbarPlugin from "draft-js-side-toolbar-plugin";
+
+// actions
+import { resetAlert } from "../../../reducers/uiSlice";
+import { useNavigate } from "react-router-dom";
 
 const inlineToolbarPlugin = createInlineToolbarPlugin();
 const { InlineToolbar } = inlineToolbarPlugin;
@@ -57,12 +63,32 @@ const NewPostForm = forwardRef(
     ref
   ) => {
     const theme = useTheme();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-    console.log(ref)
+    const { success, message } = useSelector((state) => state.ui.alertData);
+
+    useEffect(() => {
+      let timer;
+      if (message) {
+        formik.resetForm();
+        timer = setTimeout(() => {
+          dispatch(resetAlert());
+          navigate("/admin");
+        }, 2000);
+      }
+
+      return () => clearTimeout(timer);
+    }, [dispatch, formik, message, navigate]);
 
     return (
       <form onSubmit={formik.handleSubmit}>
         <Grid container spacing={2} mt={2}>
+          {message && (
+            <Grid item xs={12}>
+              <Alert severity={success ? "success" : "error"}>{message}</Alert>
+            </Grid>
+          )}
           <Grid item container spacing={2} style={{ textAlign: "center" }}>
             <Grid item xs={12}>
               <img src={preview} alt="img" />
@@ -76,12 +102,7 @@ const NewPostForm = forwardRef(
               >
                 Select Image
               </Button>
-              <input
-                type="file"
-                hidden
-                ref={ref}
-                onChange={onImageChange}
-              />
+              <input type="file" hidden ref={ref} onChange={onImageChange} />
             </Grid>
             <Grid item xs={12}>
               <TextField
