@@ -10,7 +10,7 @@ import { convertToHTML } from "draft-convert";
 import PostForm from "../../components/admin/post/PostForm";
 
 // actions
-import { addPost, addPostReset } from "../../reducers/postSlice";
+import { addPost } from "../../reducers/postSlice";
 import { fetchCategories } from "../../reducers/categorySlice";
 
 // styles
@@ -28,9 +28,6 @@ const NewPost = () => {
 
   const fetchedCategories = useSelector(
     (state) => state.category.fetchCategoryData.data
-  );
-  const postAddSuccess = useSelector(
-    (state) => state.posts.addPostData.data
   );
 
   const formik = useFormik({
@@ -63,18 +60,11 @@ const NewPost = () => {
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
-  
-  useEffect(() => {
-    if (postAddSuccess) {
-      formik.resetForm();
-      dispatch(addPostReset());
-    }
-  }, [dispatch, formik, postAddSuccess]);
 
   const preview = image ? URL.createObjectURL(image) : sampleImage;
 
   return (
-    <Box sx={{ marginTop: 8, height: "100vh" }}>
+    <Box sx={{ marginTop: 8, minHeight: "100vh" }}>
       <PostForm
         formik={formik}
         preview={preview}

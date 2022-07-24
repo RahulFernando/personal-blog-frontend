@@ -11,8 +11,9 @@ const Home = () => {
   return (
     <Grid container spacing={2} mt={2}>
       {posts.map((post) => (
-        <Grid key={post._id} item xs={3}>
+        <Grid key={post._id} item md={3} xs={6}>
           <Card
+            id={post._id}
             image={post.image}
             title={post.title}
             content={post.content}

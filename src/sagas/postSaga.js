@@ -5,6 +5,7 @@ import postService from "../services/postService";
 
 // reducers
 import * as postActions from "../reducers/postSlice";
+import * as uiActions from "../reducers/uiSlice";
 
 function* getPost({ payload }) {
   try {
@@ -51,11 +52,19 @@ function* addPost({ payload }) {
         type: postActions.addPostSuccess.type,
         payload: response.data.message,
       });
+      yield put({
+        type: uiActions.setAlert.type,
+        payload: { message: response.data.message },
+      });
     }
   } catch (error) {
     yield put({
       type: postActions.addPostFailuer.type,
       payload: error,
+    });
+    yield put({
+      type: uiActions.setAlert.type,
+      payload: { success: false, message: error },
     });
   }
 }
@@ -78,9 +87,37 @@ function* deletePost({ payload }) {
   }
 }
 
+function* updatePost({ payload }) {
+  try {
+    const { id } = payload; 
+    const response = yield call(postService.putPost, id, payload.formData);
+
+    if (response.status === 200) {
+      yield put({
+        type: postActions.updatePostSuccess.type,
+        payload: response.data.message,
+      });
+      yield put({
+        type: uiActions.setAlert.type,
+        payload: { message: response.data.message },
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: postActions.updatePostFailure.type,
+      payload: error,
+    });
+    yield put({
+      type: uiActions.setAlert.type,
+      payload: { message: error, success: false },
+    });
+  }
+}
+
 export default function* watchers() {
   yield takeEvery(postActions.fetchPostById.type, getPost);
   yield takeEvery(postActions.fetchPosts.type, getAllPosts);
   yield takeEvery(postActions.addPost.type, addPost);
+  yield takeEvery(postActions.updatePost.type, updatePost);
   yield takeEvery(postActions.deletePost.type, deletePost);
 }

@@ -16,6 +16,11 @@ const initialState = {
     data: null,
     error: null,
   },
+  updatePostData: {
+    loading: false,
+    data: null,
+    error: null,
+  },
   deletePostData: {
     loading: false,
     data: null,
@@ -69,6 +74,22 @@ const postSlice = createSlice({
     addPostReset: (state) => {
       state.addPostData = initialState.addPostData;
     },
+    updatePost: (state) => {
+      state.updatePostData.loading = true;
+    },
+    updatePostSuccess: (state, { payload }) => {
+      state.updatePostData.loading = true;
+      state.updatePostData.data = payload;
+      state.updatePostData.error = null;
+    },
+    updatePostFailure: (state, { payload }) => {
+      state.updatePostData.loading = true;
+      state.updatePostData.data = null;
+      state.updatePostData.error = payload;
+    },
+    updatePostReset: (state) => {
+      state.updatePostData = initialState.updatePostData;
+    },
     deletePost: (state) => {
       state.deletePostData.loading = true;
     },
@@ -101,6 +122,10 @@ export const {
   addPostSuccess,
   addPostFailuer,
   addPostReset,
+  updatePost,
+  updatePostSuccess,
+  updatePostFailure,
+  updatePostReset,
   deletePost,
   deletePostSuccess,
   deletePostFailure,
