@@ -10,6 +10,7 @@ import Loading from "../components/loading/Loading";
 
 // actions
 import { fetchPostById } from "../reducers/postSlice";
+import CommentForm from "../components/comments/CommentForm";
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -54,6 +55,9 @@ const Post = () => {
           )}
           <Grid item xs={12}>
             {post && Parser(post?.content)}
+          </Grid>
+          <Grid item xs={12} mt={2}>
+            <CommentForm id={id} />
           </Grid>
         </Grid>
       )}
