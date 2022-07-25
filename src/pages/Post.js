@@ -57,7 +57,7 @@ const Post = () => {
             {post && Parser(post?.content)}
           </Grid>
           <Grid item xs={12} mt={2}>
-            <CommentForm />
+            <CommentForm id={id} />
           </Grid>
         </Grid>
       )}
