@@ -7,7 +7,7 @@ import { fetchCategories } from "../../reducers/categorySlice";
 import { fetchPosts } from "../../reducers/postSlice";
 
 // helpers
-import { urlParams } from '../../helpers/utilHelper';
+import { urlParams } from "../../helpers/utilHelper";
 
 const Category = () => {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ const Category = () => {
 
   const clickCategoryHandler = (id) => {
     dispatch(fetchPosts(urlParams({ category: id })));
-  }
+  };
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -33,19 +33,21 @@ const Category = () => {
   return (
     <Paper>
       <Grid container p={2}>
-        {categories.map((category) => (
-          <Grid key={category._id} item xs={3}>
-            <span onClick={clickCategoryHandler.bind(null, category._id)}>
-              <Typography
-                variant="subtitle1"
-                fontWeight={600}
-                sx={{ color: "#4d2e80", cursor: "pointer" }}
-              >
-                {category.name}
-              </Typography>
-            </span>
-          </Grid>
-        ))}
+        <Grid item container spacing={2}>
+          {categories.map((category) => (
+            <Grid key={category._id} item md={3} xs={4}>
+              <span onClick={clickCategoryHandler.bind(null, category._id)}>
+                <Typography
+                  variant="subtitle1"
+                  fontWeight={600}
+                  sx={{ color: "#4d2e80", cursor: "pointer" }}
+                >
+                  {category.name}
+                </Typography>
+              </span>
+            </Grid>
+          ))}
+        </Grid>
       </Grid>
     </Paper>
   );

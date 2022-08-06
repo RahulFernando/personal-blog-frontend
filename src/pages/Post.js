@@ -10,16 +10,20 @@ import Loading from "../components/loading/Loading";
 
 // actions
 import { fetchPostById } from "../reducers/postSlice";
+import CommentForm from "../components/comments/CommentForm";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   image: {
-    width: 700,
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: 700
+    },
     height: 400,
   },
   center: {
     textAlign: "center",
   },
-});
+}));
 
 const Post = () => {
   const styles = useStyles();
@@ -51,6 +55,9 @@ const Post = () => {
           )}
           <Grid item xs={12}>
             {post && Parser(post?.content)}
+          </Grid>
+          <Grid item xs={12} mt={2}>
+            <CommentForm id={id} />
           </Grid>
         </Grid>
       )}
