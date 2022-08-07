@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'iTech-personal-blog'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E83BFD09E0E9429E94E90202A9EC1DB5 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_58D7782955B64E1CA61B4078FFBE44A2 }}
           package: .
